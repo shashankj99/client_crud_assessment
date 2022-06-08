@@ -10,8 +10,10 @@ class Client extends BaseModel
     protected string $filename = "clients.csv";
 
     protected array $columns = [
+        "id",
         "name",
         "gender",
+        "email",
         "phone",
         "address",
         "nationality",

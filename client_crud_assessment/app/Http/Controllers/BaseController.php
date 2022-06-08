@@ -7,6 +7,7 @@ use App\Traits\ApiResponseFormat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseController extends Controller
@@ -39,6 +40,7 @@ class BaseController extends Controller
     {
         try {
             $data = $this->repository->validateData($request);
+            $data["id"] = Str::uuid();
             $this->repository->store($data);
         } catch (Exception $exception) {
             return $this->handleException($exception);
