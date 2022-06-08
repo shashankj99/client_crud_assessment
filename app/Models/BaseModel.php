@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Exception;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class BaseModel
@@ -41,7 +40,7 @@ class BaseModel
     {
         try {
             $row = 0;
-            $file = fopen(public_path("/storage/{$this->filename}"), "r");
+            $file = fopen(public_path($this->filename), "r");
             if (!$file) {
                 throw new Exception("Unable to open the file");
             }

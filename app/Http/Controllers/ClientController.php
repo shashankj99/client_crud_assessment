@@ -6,6 +6,7 @@ use App\Repositories\ClientRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ClientController extends BaseController
 {
@@ -19,6 +20,7 @@ class ClientController extends BaseController
     {
         try {
             $data = $this->repository->validateClientData($request);
+            $data["id"] = Str::uuid();
             $this->repository->store($data);
         } catch (Exception $exception) {
             return $this->handleException($exception);

@@ -21,7 +21,6 @@ class Client extends BaseModel
     protected string $filename = "clients.csv";
 
     protected array $columns = [
-        "id",
         "name",
         "gender",
         "email",
@@ -31,6 +30,7 @@ class Client extends BaseModel
         "dob",
         "educational_background",
         "preferred_mode_of_contact",
+        "id",
     ];
 
     public static array $gender = [
@@ -52,6 +52,7 @@ class Client extends BaseModel
     public static array $preffered_mode_of_contact = [
         self::EMAIL,
         self::PHONE,
+        "none",
     ];
 
     public static array $nationality = [

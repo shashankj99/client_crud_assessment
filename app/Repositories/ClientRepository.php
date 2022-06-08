@@ -23,16 +23,17 @@ class ClientRepository extends BaseRepository
             "nationality" => ["required", Rule::in($this->model::$nationality)],
             "dob" => ["required", "date"],
             "educational_background" => ["required", Rule::in($this->model::$educational_backgrounds)],
-            "preferred_mode_of_contatc" => ["sometimes", "nullable", Rule::in($this->model::$preffered_mode_of_contact)],
+            "preferred_mode_of_contact" => ["required", Rule::in($this->model::$preffered_mode_of_contact)],
         ];
     }
 
     public function validateClientData(Request $request): array
     {
         try {
-            $data = $this->validateData($request, [], [], function ($data) use ($request) {
+            $data = $this->validateData($request, [], [], function () use ($request) {
                 $data["email"] = $this->model->checkIfDataExists($request->email);
                 $data["phone"] = $this->model->checkIfDataExists($request->phone);
+                return $data;
             });
         } catch (Exception $exception) {
             throw $exception;
