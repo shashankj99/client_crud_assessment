@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Traits\ApiResponseFormat;
+use App\Traits\HasExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BaseController extends Controller
 {
     use ApiResponseFormat;
+    use HasExceptionHandler;
 
     public $repository;
     public string $model_name;
@@ -31,8 +33,8 @@ class BaseController extends Controller
     public function handleException(object $exception): JsonResponse
     {
         return $this->errorResponse(
-            message: $this->getExceptionMessage($exception),
-            response_code: $this->getExceptionStatus($exception)
+            $this->getExceptionMessage($exception),
+            $this->getExceptionStatus($exception)
         );
     }
 
@@ -47,8 +49,8 @@ class BaseController extends Controller
         }
 
         return $this->successResponseWithMessage(
-            message: "Created successfully",
-            response_code: Response::HTTP_CREATED
+            "Created successfully",
+            Response::HTTP_CREATED
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class BaseModel
@@ -36,11 +37,11 @@ class BaseModel
         return false;
     }
 
-    public function checkIfDataExists(string $data, ?string $id = null): bool
+    public function checkIfDataExists(string $data, ?string $id = null): string
     {
         try {
             $row = 0;
-            $file = fopen($this->filename, "r");
+            $file = fopen(public_path("/storage/{$this->filename}"), "r");
             if (!$file) {
                 throw new Exception("Unable to open the file");
             }
@@ -74,13 +75,13 @@ class BaseModel
             throw $exception;
         }
 
-        return false;
+        return $data;
     }
 
     public function create(array $data): void
     {
         try {
-            $file = fopen($this->filename, "w");
+            $file = fopen(public_path($this->filename), "w");
             if (!$file) {
                 throw new Exception("Unable to open the file");
             }

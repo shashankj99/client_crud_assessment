@@ -30,28 +30,16 @@ trait ApiResponseFormat
 
     public function successResponse(mixed $payload, ?string $message = null, int $response_code = Response::HTTP_OK): JsonResponse
     {
-        return $this->response(
-            message: $message,
-            payload: $payload,
-            status: true,
-            response_code: $response_code
-        );
+        return $this->response($message, $payload, true, $response_code);
     }
 
     public function errorResponse(string $message, int $response_code = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
     {
-        return $this->response(
-            message: $message,
-            status: false,
-            response_code: $response_code
-        );
+        return $this->response($message, null, false, $response_code);
     }
 
     public function successResponseWithMessage(string $message, int $response_code = Response::HTTP_OK): JsonResponse
     {
-        return $this->response(
-            message: $message,
-            response_code: $response_code
-        );
+        return $this->response($message, null, true, $response_code);
     }
 }

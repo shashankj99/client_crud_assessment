@@ -8,7 +8,8 @@ class BaseRepository
 {
     public array $rules;
     public array $messages = [];
-    protected object $model;
+    public object $model;
+    public ?string $model_name;
 
     public function validateData(
         object $request,
