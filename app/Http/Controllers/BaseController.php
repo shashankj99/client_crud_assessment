@@ -38,6 +38,17 @@ class BaseController extends Controller
         );
     }
 
+    public function index(Request $request)
+    {
+        try {
+            $data = $this->repository->index($request);
+        } catch (Exception $exception) {
+            return $this->handleException($exception);
+        }
+
+        return $this->successResponse($data, "Fetched successfully");
+    }
+
     public function store(Request $request): JsonResponse
     {
         try {

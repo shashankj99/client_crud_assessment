@@ -2,10 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Traits\Filterable;
 use Exception;
+use Illuminate\Http\Request;
 
 class BaseRepository
 {
+    use Filterable;
+
     public array $rules;
     public array $messages = [];
     public object $model;
@@ -47,5 +51,17 @@ class BaseRepository
         } catch (Exception $exception) {
             throw $exception;
         }
+    }
+
+    public function index(Request $request, ?callable $callback = null)
+    {
+        try {
+            $filter = $this->validateFiltering($request);
+            $data = $this->model->index($filter);
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+
+        return $data;
     }
 }
