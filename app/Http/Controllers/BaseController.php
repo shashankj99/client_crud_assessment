@@ -64,4 +64,15 @@ class BaseController extends Controller
             Response::HTTP_CREATED
         );
     }
+
+    public function show(string $id)
+    {
+        try {
+            $data = $this->repository->show($id);
+        } catch (Exception $exception) {
+            return $this->handleException($exception);
+        }
+
+        return $this->successResponse($data, "Fetched successfully");
+    }
 }

@@ -16,9 +16,7 @@ trait ApiResponseFormat
         $response = [
             "success" => $status,
             "message" => json_decode($message) ?? $message,
-            "payload" => is_object($payload)
-                ? $payload->response()->getData(true)
-                : ["data" => $payload],
+            "payload" => ["data" => $payload],
         ];
 
         if ($payload == null) {

@@ -124,4 +124,23 @@ class BaseModel
 
         return array_values($generated_data);
     }
+
+    public function show(string $id)
+    {
+        try {
+            $file = fopen(public_path($this->filename), "r");
+            if (!$file) {
+                throw new Exception("Unable to open the file");
+            }
+            while (($csv_data = fgetcsv($file, 1000, ",")) != false) {
+                if (isset($csv_data[9]) && $csv_data[9] == $id) {
+                    return $csv_data;
+                }
+            }
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+
+        return null;
+    }
 }
