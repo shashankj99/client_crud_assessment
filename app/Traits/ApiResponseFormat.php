@@ -9,7 +9,7 @@ trait ApiResponseFormat
 {
     private function response(
         ?string $message = null,
-        array $payload = null,
+        mixed $payload = null,
         bool $status = true,
         int $response_code = Response::HTTP_OK
     ): JsonResponse {
@@ -26,7 +26,7 @@ trait ApiResponseFormat
         return response()->json($response, $response_code);
     }
 
-    public function successResponse(array $payload, ?string $message = null, int $response_code = Response::HTTP_OK): JsonResponse
+    public function successResponse(mixed $payload, ?string $message = null, int $response_code = Response::HTTP_OK): JsonResponse
     {
         return $this->response($message, $payload, true, $response_code);
     }

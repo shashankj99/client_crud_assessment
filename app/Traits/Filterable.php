@@ -11,8 +11,7 @@ trait Filterable
     {
         try {
             $data = $request->validate([
-                "limit" => "required|numeric|min:5",
-                "offset" => "required|numeric|min:0",
+                "limit" => "sometimes|numeric|min:5",
             ]);
         } catch (Exception $exception) {
             throw $exception;

@@ -99,25 +99,17 @@ class BaseModel
     public function index(array $data): array
     {
         try {
-            $limit = $data["limit"];
-            $offset = $data["offset"];
-            $row = 0; $count = 1;
+            $row = 0;
             $file = fopen(public_path($this->filename), "r");
             if (!$file) {
                 throw new Exception("Unable to open the file");
             }
-            $file_obj = new SplFileObject(public_path($this->filename), "r");
-            $file_obj->seek(PHP_INT_MAX);
-            $generated_data["count"] = $file_obj->key()-1;
             while (($csv_data = fgetcsv($file, 1000, ",")) != false) {
                 $row++;
-                if ($row == 1 || ($offset != 0 && ($row <= $offset))) {
+                if ($row == 1) {
                     continue;
                 }
-                if ($count >= $limit) {
-                    break;
-                }
-                $generated_data["clients"][] = $csv_data;
+                $generated_data[] = $csv_data;
             }
         } catch (Exception $exception) {
             throw $exception;

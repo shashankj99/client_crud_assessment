@@ -7,6 +7,7 @@ use App\Traits\ApiResponseFormat;
 use App\Traits\HasExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,11 +43,18 @@ class BaseController extends Controller
     {
         try {
             $data = $this->repository->index($request);
+
+            $current_page = LengthAwarePaginator::resolveCurrentPage();
+            $per_page = $request->limit ?? 10;
+
+            $currentItems = array_slice($data, $per_page * ($current_page - 1), $per_page);
+            $paginator = new LengthAwarePaginator($currentItems, count($data), $per_page, $current_page);
+            $results = $paginator->withPath(config("app.url")."/api/clients");
         } catch (Exception $exception) {
             return $this->handleException($exception);
         }
 
-        return $this->successResponse($data, "Fetched successfully");
+        return $this->successResponse($results, "Fetched successfully");
     }
 
     public function store(Request $request): JsonResponse
