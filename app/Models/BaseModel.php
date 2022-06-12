@@ -54,7 +54,7 @@ class BaseModel
 
                 validate_email:
                 if ($data == $csv_data[3]) {
-                    if ($id && ($id == $csv_data[0])) {
+                    if ($id && ($id == $csv_data[9])) {
                         goto validate_phone;
                     }
                     throw ValidationException::withMessages([
@@ -64,7 +64,7 @@ class BaseModel
 
                 validate_phone:
                 if ($data == $csv_data[4]) {
-                    if ($id && ($id == $csv_data[0])) {
+                    if ($id && ($id == $csv_data[9])) {
                         continue;
                     }
                     throw ValidationException::withMessages([
@@ -82,7 +82,7 @@ class BaseModel
     public function create(array $data): void
     {
         try {
-            $file = fopen(public_path($this->filename), "w");
+            $file = fopen(public_path($this->filename), "a");
             if (!$file) {
                 throw new Exception("Unable to open the file");
             }
@@ -107,7 +107,8 @@ class BaseModel
                 throw new Exception("Unable to open the file");
             }
             $file_obj = new SplFileObject(public_path($this->filename), "r");
-            $generated_data["count"] = $file_obj->key()+1;
+            $file_obj->seek(PHP_INT_MAX);
+            $generated_data["count"] = $file_obj->key()-1;
             while (($csv_data = fgetcsv($file, 1000, ",")) != false) {
                 $row++;
                 if ($row == 1 || ($offset != 0 && ($row <= $offset))) {
@@ -116,13 +117,13 @@ class BaseModel
                 if ($count >= $limit) {
                     break;
                 }
-                $generated_data[] = $csv_data;
+                $generated_data["clients"][] = $csv_data;
             }
         } catch (Exception $exception) {
             throw $exception;
         }
 
-        return array_values($generated_data);
+        return $generated_data;
     }
 
     public function show(string $id)
