@@ -53,7 +53,7 @@ class BaseModel
                 }
 
                 validate_email:
-                if ($data == $csv_data[3]) {
+                if ($data == $csv_data[2]) {
                     if ($id && ($id == $csv_data[9])) {
                         goto validate_phone;
                     }
@@ -63,7 +63,7 @@ class BaseModel
                 }
 
                 validate_phone:
-                if ($data == $csv_data[4]) {
+                if ($data == $csv_data[3]) {
                     if ($id && ($id == $csv_data[9])) {
                         continue;
                     }
