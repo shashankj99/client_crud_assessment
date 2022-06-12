@@ -15,17 +15,4 @@ class ClientController extends BaseController
         $this->repository = new ClientRepository();
         parent::__construct();
     }
-
-    public function store(Request $request): JsonResponse
-    {
-        try {
-            $data = $this->repository->validateClientData($request);
-            $data["id"] = Str::uuid();
-            $this->repository->store($data);
-        } catch (Exception $exception) {
-            return $this->handleException($exception);
-        }
-
-        return $this->successResponseWithMessage("Created successfully");
-    }
 }
